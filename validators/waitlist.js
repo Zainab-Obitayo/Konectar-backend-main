@@ -3,7 +3,7 @@ import Joi from "joi";
 export const farmerDetails = Joi.object({
   fullName: Joi.string().trim().required(), 
   farmName: Joi.string().trim().required(), 
-  farmLocation: Joi.string().required(), 
+  location: Joi.string().required(), 
   email: Joi.string().email().trim().required(),
   
   phoneNumber: Joi.string()
@@ -14,7 +14,7 @@ export const farmerDetails = Joi.object({
     }),
   
   typeOfProduce: Joi.string().required(), 
-  farmSize: Joi.string().required(), 
+  size: Joi.string().required(), 
   supplyFrequency: Joi.string().required(), 
   distributionChannels: Joi.string().required(), 
   mainChallenge: Joi.string().required(), 
