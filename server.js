@@ -14,7 +14,7 @@ async function startServer() {
     console.log('Database synchronized.');
 
     // Start the server
-    const PORT = config.PORT || 3000;
+    const PORT = config.PORT ;
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}`);
     });
