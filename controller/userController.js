@@ -17,7 +17,7 @@ export const farmerWaitlist = async (req, res, next) => {
             return res.status(400).json({ message: 'Validation error', details: error.details });
         }
 
-        const { fullName, farmName, location, email, phoneNumber, typeOfProduce, farmSize, supplyFrequency, distributionChannels, mainChallenge, additionalOfferings, updateAndNotification } = value;
+        const { fullName, farmName, location, email, phoneNumber, typeOfProduce, size, supplyFrequency, distributionChannels, mainChallenge, additionalOfferings, updateAndNotification } = value;
 
         // Check if farmer with email already exists
         const userExist = await farmer.findOne({ where: { email } });
@@ -36,8 +36,8 @@ export const farmerWaitlist = async (req, res, next) => {
         // Create and save new farm
         const newFarm = await farm.create({
             farmName,
-            location: farmLocation,
-            size: farmSize,
+            location,
+            size,
             supplyFrequency,
             distributionChannels,
             mainChallenge,
