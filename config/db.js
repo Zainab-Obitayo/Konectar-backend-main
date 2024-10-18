@@ -2,10 +2,10 @@ import { Sequelize } from 'sequelize';
 import config from './env.js';
 
 // Correct Sequelize instance connection
-const sequelize = new Sequelize(config.DBNAME, config.PG_USER, config.PG_PASS, { 
-  host: config.PG_HOST,     // Database host
-  port: config.PG_PORT,            // PostgreSQL default port
-  dialect: 'postgres',   // Specify PostgreSQL as the dialect
+const sequelize = new Sequelize(config.DATABASE_URL, {
+  dialect: 'postgres',
+  protocol: 'postgres',
+  logging: false, // Disable logging; default: console.log
 });
 
 // Test the connection (optional utility function)
