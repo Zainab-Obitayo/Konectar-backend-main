@@ -1,55 +1,50 @@
-// farm model
-import { DataTypes } from 'sequelize';
-import {sequelize} from '../config/db.js';
-import farmer from './farmer.js';
+import mongoose from 'mongoose';
+import Farmer from './farmer.js';
 
-// Define the farm model
-const farm = sequelize.define('farm', {
+// Create a new schema for Farm
+const farmSchema = new mongoose.Schema({
   farmId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,  // auto-increments farm id
-    primaryKey: true      // primaryKey
+    type: Number,
+    required: true,
+    unique: true,
+    auto: true, // Automatically increment ID
   },
   farmName: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
-    set(value) {
-      this.setDataValue('farmName', value.trim());  // Trims the whitespace for farmName
-    },
+    trim: true, // Trims whitespace
   },
   location: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   size: {
-    type: DataTypes.ENUM('less than 2.5 acres', '2.5-7.5 acres', '7.5-12 acres', 'More than 20 acres'),
-    allowNull: false
+    type: String,
+    required: true,
+    enum: ['less than 2.5 acres', '2.5-7.5 acres', '7.5-12 acres', 'More than 20 acres'],
   },
   supplyFrequency: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   distributionChannel: {
-    type: DataTypes.ENUM('local market', 'wholesalers', 'Direct sales'),
+    type: String,
+    enum: ['local market', 'wholesalers', 'Direct sales'],
   },
   mainChallenges: {
-    type: DataTypes.TEXT,
-  }, 
+    type: String,
+  },
   additionalOfferings: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: true,
   },
   farmerId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: farmer,    // Reference to farmer model (Farmer)
-      key: 'farmerId'     // Reference the farmerId field
-    },
-    allowNull: false
-  }
-}, {
-  timestamps: true
-});
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Farmer', // Reference to Farmer model
+    required: true,
+  },
+}, { timestamps: true }); // Add timestamps
 
-export default farm;
+// Export the Farm model
+export default mongoose.model('Farm', farmSchema);

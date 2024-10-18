@@ -1,27 +1,22 @@
-import { DataTypes } from 'sequelize';
-import {sequelize} from '../config/db.js';
-import farm from './farm.js';
+import mongoose from 'mongoose';
+import Farm from './farm.js';
 
-const produce = sequelize.define('produce', {
+const produceSchema = new mongoose.Schema({
   produceId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,  // auto-increments farmer id
-    primaryKey: true      // primaryKey
+    type: Number,
+    required: true,
+    unique: true,
+    auto: true, // Automatically increment ID
   },
   typeOfProduce: {
-    type: DataTypes.STRING,
-    allowNull: false
+    type: String,
+    required: true,
   },
   farmId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: farm,    // reference to waitlist model
-      key: 'farmId'     // Reference the column farmerId
-    },
-    allowNull: false
-  }
-}, {
-  timestamps: true
-});
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Farm', // Reference the Farm model
+    required: true,
+  },
+}, { timestamps: true }); // Adds createdAt and updatedAt fields
 
-export default produce;
+export default mongoose.model('Produce', produceSchema);

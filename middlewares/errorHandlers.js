@@ -7,25 +7,25 @@ export const errorHandler = (err, req, res, next) => {
   error.message = err.message || 'Server Error';
   error.statusCode = err.statusCode || 500;
 
-  // Unique constraint violation (PostgreSQL duplicate key)
-  if (err.code === '23505') {
+  // Duplicate key error (MongoDB duplicate key)
+  if (err.code === 11000) {
     const message = "Duplicate key value entered";
     error = new ErrorResponse(message, 400);
   }
 
-  // Foreign key violation
-  if (err.code === '23503') {
-    const message = `Foreign key constraint failed for value: ${err.detail}`;
+  // Validation error (Mongoose validation error)
+  if (err.name === 'ValidationError') {
+    const message = Object.values(err.errors).map(val => val.message).join(', ');
     error = new ErrorResponse(message, 400);
   }
 
-  // Invalid input syntax (e.g., invalid UUID)
-  if (err.code === '22P02') {
-    const message = `Invalid input syntax for type: ${err.detail}`;
+  // Cast error (Invalid ObjectId)
+  if (err.name === 'CastError') {
+    const message = `Invalid ${err.path}: ${err.value}`;
     error = new ErrorResponse(message, 400);
   }
 
-  // General database error
+  // General MongoDB error
   if (err.code) {
     const message = `Database error occurred: ${err.message}`;
     error = new ErrorResponse(message, 500);

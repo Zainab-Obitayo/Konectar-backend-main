@@ -6,7 +6,7 @@ import {
     farmerWaitlist
 } from "../controller/userController.js";
 
-router.post("/signup", farmerWaitlist);
+router.post("/waitlist", farmerWaitlist);
 
 export default router;
 

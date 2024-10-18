@@ -1,41 +1,42 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from '../config/db.js'
+import mongoose from 'mongoose';
 
-// Define the waitlist model (User)
-const farmer = sequelize.define('Farmer', {
+const farmerSchema = new mongoose.Schema({
   farmerId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,  // auto-increments farmer id
-    primaryKey: true      // primaryKey
+    type: Number,
+    required: true,
+    unique: true,
+    auto: true, // Automatically increment ID
   },
   fullName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    set(value) {
-      this.setDataValue('fullName', value.trim());  // Trims the whitespace for fullName
-    },
+    type: String,
+    required: true,
+    trim: true, // Trims whitespace
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
     validate: {
-      isEmail: true,
+      validator: function(v) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); // Simple email validation
+      },
+      message: props => `${props.value} is not a valid email!`
     },
   },
   phoneNumber: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     validate: {
-      len: [10, 14],  // Allows a length of 14 (with international format)
-    }
-  },  
+      validator: function(v) {
+        return /^\d{10,14}$/.test(v); // Validates phone number length (10-14 digits)
+      },
+      message: props => `${props.value} is not a valid phone number!`
+    },
+  },
   notifications: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
+    type: Boolean,
+    default: false,
   }
-}, {
-  timestamps: true, // automatically adds createdAt and updatedAt
-});
+}, { timestamps: true }); // Adds createdAt and updatedAt fields
 
-export default farmer;
+export default mongoose.model('Farmer', farmerSchema);

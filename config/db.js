@@ -1,21 +1,18 @@
-import { Sequelize } from 'sequelize';
-import config from './env.js';
+import mongoose from 'mongoose';
+import config from './env.js'; // Assume env.js loads environment variables
 
-// Correct Sequelize instance connection
-const sequelize = new Sequelize(config.DATABASE_URL, {
-  dialect: 'postgres',
-  protocol: 'postgres', 
-  logging: false, // Disable logging; default: console.log
-});
+const mongoURI = process.env.MONGO_URI || config.MONGO_URI; // Fallback to config if env not set
 
-// Test the connection (optional utility function)
-async function testConnection() {
+// Connect to MongoDB
+async function connectDB() {
   try {
-    await sequelize.authenticate();
-    console.log('Connection to the database has been established successfully.');
+    await mongoose.connect(mongoURI);
+    console.log('MongoDB connected successfully');
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error('MongoDB connection error:', error);
+    process.exit(1); // Exit process with failure
   }
 }
 
-export { sequelize, testConnection };
+// Export connection function
+export { connectDB };
