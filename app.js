@@ -19,7 +19,7 @@ app.use(cors());
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Konectar' });
+  res.status(200).json({ message: 'Welcome to Konectar' });
 });
 
 app.use('/waitlist', userRouter);
