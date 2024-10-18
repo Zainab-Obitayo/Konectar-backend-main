@@ -4,7 +4,7 @@ import config from './env.js';
 // Correct Sequelize instance connection
 const sequelize = new Sequelize(config.DBNAME, config.PG_USER, config.PG_PASS, { 
   host: config.PG_HOST,     // Database host
-  port: 5432,            // PostgreSQL default port
+  port: config.PG_PORT,            // PostgreSQL default port
   dialect: 'postgres',   // Specify PostgreSQL as the dialect
 });
 
