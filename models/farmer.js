@@ -28,7 +28,7 @@ const farmerSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function(v) {
-        return /^\d{10,14}$/.test(v); // Validates phone number length (10-14 digits)
+        return /^\+?[1-9]\d{1,14}$/.test(v); // Validates phone number length (10-14 digits)
       },
       message: props => `${props.value} is not a valid phone number!`
     },
