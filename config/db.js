@@ -4,7 +4,7 @@ import config from './env.js';
 // Correct Sequelize instance connection
 const sequelize = new Sequelize(config.DATABASE_URL, {
   dialect: 'postgres',
-  protocol: 'postgres',
+  protocol: 'postgres', 
   logging: false, // Disable logging; default: console.log
 });
 
